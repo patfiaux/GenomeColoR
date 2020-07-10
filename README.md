@@ -7,11 +7,19 @@ The main feature of GenomeColoR is to highlighting different regions of the same
 GenomeColoR requires R version 3.51 or higher
 
 # Obtain source code
-Clone source code to your desired location with the following command: git clone `https://github.com/patfiaux/GenomeColoR.git`. Alternatively, download the repository.
+Clone source code to your desired location with the following command: `git clone https://github.com/patfiaux/GenomeColoR.git`. Alternatively, download the repository.
 
 # Install requirements
 ou will need the following packages to run RELICS. If you don't have them, install them using the following commands. Installations will take about 5 minutes on a standard laptop.
 
 ggplot2
+
 ```install.packages('ggplot2')```
 
+# Bioconductor packages
+
+# Input data format
+
+# Quickstart with example data
+
+# Advanced flags
