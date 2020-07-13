@@ -22,7 +22,7 @@ ggplot2
 
 # Quickstart with example data
 In this example we will recreate the following figure:
-![alt text](http://github.com/patfiaux/GenomeColoR/Figures/GATA1_GenomeColoR_plot.png)
+![alt text](https://github.com/patfiaux/GenomeColoR/Figures/GATA1_GenomeColoR_plot.png?raw=true)
 
 The figure shows the results of analyzing data from a CRISPR inhibition (CRISPRi) screen by [Fulco et al. (2016)](https://science.sciencemag.org/content/354/6313/769.abstract) with [RELICS](https://github.com/patfiaux/RELICS), a tool developped specifically for analyzing tiling CRISPR screens for the detection of functional sequences (FS). RELICS reports all functional sequences detected and their location. To keep apart the different FS we will give each of them a distinct color.
 
