@@ -1,3 +1,15 @@
+
+print('Loading Libraries...')
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(GenomicRanges)
+
+
+if("biomaRt" %in% rownames(installed.packages()) == TRUE){
+  library(biomaRt)
+}
+
 #' @title Generic wrapper function for plotting
 #' @param input.df: data frame containing the scores and the coordinates, $chrom, $start, $end, $label
 #' @param score.name: name of the column containing the scores input.df[[input.analysis.type]]
@@ -529,9 +541,9 @@ display_peak_max <- function(data.list, main.data.name, data.to.correlate, input
 #' @param genome.to.use: default hg19
 #' @param only.gene: if many genes in region, display name of only this gene
 #' @return NA
-#' @export plot_browserStyle()
+#' @export plot_tracks()
 
-plot_browserStyle <- function(input.df.orig.list, score.names, label.color.list,
+plot_tracks <- function(input.df.orig.list, score.names, label.color.list,
                               x.min = NULL, x.max = NULL, track.height = NULL,
                               genome.to.use = NULL, only.gene = NULL ){
 
