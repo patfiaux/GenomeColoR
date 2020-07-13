@@ -22,7 +22,7 @@ ggplot2
 
 # Quickstart with example data
 In this example we will recreate the following figure:
-![alt text](http://url/to/img.png)
+![alt text](http://github.com/patfiaux/GenomeColoR/Figures/GATA1_GenomeColoR_plot.png)
 
 The figure shows the results of analyzing data from a CRISPR inhibition (CRISPRi) screen by [Fulco et al. (2016)](https://science.sciencemag.org/content/354/6313/769.abstract) with [RELICS](https://github.com/patfiaux/RELICS), a tool developped specifically for analyzing tiling CRISPR screens for the detection of functional sequences (FS). RELICS reports all functional sequences detected and their location. To keep apart the different FS we will give each of them a distinct color.
 
@@ -59,33 +59,15 @@ gata1.h3k27ac <- read.table('Data/GATA1_H3K27ac_track.txt', header = T, sep = '\
 ## 3. Set up the input
 The main function `plot_tracks` requires at least 3 inputs. 
 
-### 3.1 Tracks to plot
-The tracks to plot are provided as a list.
-
-```
-track.scores <- list(RELICS = gata1.scores,
-                    L2FC = gata1.l2fc,
-                    H3K27ac = gata1.h3k27ac)
-```
-
-### 3.2 Track score type
-For each track, provide the type of track you want to plot.
-In this case, both the RELICS scores and the H3K27ac track are plotted as continous tracks coloring the height from 0 to the given score. However, the log2 fold change track is plotted with individual points.
-
-```
-track.types <- c('genomeScore', 'pointCloud', 'genomeScore')
-```
-
-### 3.3 Track colors 
+### 3.1 Track colors 
 Specify the colors for each of the tracks from 3.1. Keep in mind that the colors are assigned to the track in the order they are given, not by the name in the list. The latter just helps keeping track of what tracks already have been colored.
 
 The colors for each track are given as `data.frame` where each row corresponds to a label present in the track to plot. 
 ```
 relics.colors <- data.frame(label = c("FS 0", "FS 1", "FS 2", "FS 3", "FS 4", "FS 5", "non_Functional"),
-                            color = c("#FF0000", "#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#000000"), 
-                            stringsAsFactors = F)
+                            color = c("#FF0000", "#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#000000"))
                             
-l2fc.colors <- data.frame(label = c("non_Functional"),
+l2fc.colors <- data.frame(label = c("l2fc"),
                           color = c('grey30'), 
                           stringsAsFactors = F)
                           
@@ -97,6 +79,29 @@ track.colors <- list(RELICS = relics.colors,
                      L2FC = l2fc.colors,
                      H3K27ac = h3k27.colors)
 
+```
+
+Note that because the labels are treated as factors, it's important to fix their ordering according to the order of the color data frame, else color will not match its label. This is only necessary if there are multiple colors / labels within a track.
+
+```
+gata1.scores$label <- factor(gata1.scores$label, levels = relics.colors$label)
+```
+
+### 3.2 Track score type
+For each track, provide the type of track you want to plot.
+In this case, both the RELICS scores and the H3K27ac track are plotted as continous tracks coloring the height from 0 to the given score. However, the log2 fold change track is plotted with individual points.
+
+```
+track.types <- c('genomeScore', 'pointCloud', 'genomeScore')
+```
+
+### 3.3 Tracks to plot
+The tracks to plot are provided as a list. Make sure you place the tracks into the list after dealing with the factor issue mentioned in 3.1.
+
+```
+track.scores <- list(RELICS = gata1.scores,
+                    L2FC = gata1.l2fc,
+                    H3K27ac = gata1.h3k27ac)
 ```
 
 # 4 Track height
@@ -117,4 +122,5 @@ plot_tracks(track.scores,
             track.colors,
             track.height = track.heights)
 ```
+
 # Advanced flags
