@@ -122,6 +122,29 @@ plot_tracks(track.scores,
             track.types,
             track.colors,
             track.height = track.heights)
+            
+#Note, sometimes R can't access the BioMart database, either because of lack of internet connection or work is done on the database. In that case you can specify the `genome.to.use` flag as 'none' to plot without the genes surrounding your area of interest
+
+plot_tracks(track.scores,
+            track.types,
+            track.colors,
+            track.height = track.heights,
+            genome.to.use = 'none')
 ```
 
 # Advanced flags
+
+## Using different genome builds
+By default, GenomeColoR uses hg37 to plot your tracks. However, your data may not be from the hg37 build. Plotting is currently possibe with both hg38 as well as the mouse builds mm9 and mm10.
+Adjust the `genome.to.use` flag accordingly.
+
+```
+# example not run with the suggested changes as they don't correspond to the correct build.
+# This simply serves as example for how to use the flag
+plot_tracks(track.scores,
+            track.types,
+            track.colors,
+            track.height = track.heights,
+            genome.to.use = 'hg38')  # other options are: 'mm9', 'mm10'
+```
+
