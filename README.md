@@ -110,7 +110,7 @@ Differnt tracks might have varying importance in your plot. Incrrease the size o
 
 ```
 # the track heights are relative, so the numbers here are selected somewhat arbitrarily.
-track.heights <- c(4,4,0.5)
+track.heights <- c(4, 4, 0.5)
 ```
 
 ## 5 Plotting
@@ -148,3 +148,51 @@ plot_tracks(track.scores,
             genome.to.use = 'hg38')  # other options are: 'mm9', 'mm10'
 ```
 
+## Specifying custom ranges
+Instead of having to manually trim all your data to a specific range you can set it.
+This can help when zooming in on specific areas.
+
+```
+# example where we zoom in to the GATA1 region
+plot_tracks(track.scores,
+            track.types,
+            track.colors,
+            track.height = track.heights,
+            x.min = 48640000,
+            x.max = 48655000)            
+```
+
+## Adding .bed file tracks
+Sometimes it's important to not only plot the continous range of scores acros the region, but to point out specific regions of interest. In these cases, the y-axis is meaningless as the function is merely to draw attention to a region, not quantify something.
+
+Here we will add in a .bed file with the target coordinates of sgRNA validations done on FS5 for this data set.
+```
+# loadig in the 
+fs5.validation <- read.table('Data/FS5_validation.bed', header = F, col.names = c('chrom', 'start', 'end', 'label'), sep = '\t', stringsAsFactors = F)
+
+# add data to the 'track.scores' list. In this case the track will be appended at the end. If a different positioning is desired, the lists for the scores, colors and height have to be adjusted accordingly.
+# Currently the only color of .bed style tracks is black, as such the color can be set to the NULL default
+track.scores$Validation <- fs5.validation
+track.types <- c(track.types, 'bed')
+track.colors$Validation <- NULL
+
+track.heights <- c(4, 4, 0.5, 0.5)
+
+plot_tracks(track.scores,
+            track.types,
+            track.colors,
+            track.height = track.heights) 
+            
+```
+
+## Display only some gene names
+If plotting very large regions the 'Genes' track can get overly crowded with gene names. 
+In such a case, the user can specify what gene names are to be displayed. For all other genes the location is still being displayed.
+
+```
+plot_tracks(track.scores,
+            track.types,
+            track.colors,
+            track.height = track.heights,
+            only.gene = c('GATA1', 'GLOD5'))
+```
