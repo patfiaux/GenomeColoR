@@ -668,8 +668,41 @@ plot_browser_bedGraph <- function(input.df, plot.min, plot.max, plot.name, plot.
                       values = adjustcolor(as.character(label.colors$color), alpha.f = 1)) +
     guides(fill = guide_legend(override.aes = list(alpha = 1))) + # not sure what this does
     # specifiy the size of the plot
-    scale_x_continuous(limits=c(plot.min, plot.max)) +
-    theme(axis.title.x=element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank(),
+    scale_x_continuous(limits=c(plot.min, plot.max)) 
+  
+  if(! is.null(track.height) && track.height < 1){
+    y.min.break <- min(input.df$genomeScore)
+    y.max.break <- max(input.df$genomeScore)
+    
+    if(abs(abs(y.max.break) - abs(y.min.break)) > 10){
+      y.min.break <- floor(y.min.break)
+      y.max.break <- ceiling(y.max.break)
+    }
+    
+    if(y.min.break < 0){
+      y.min.break <- abs(y.min.break)
+      y.min.break.sig <- floor(log10(y.min.break)) - 1
+      y.min.break <- ceiling(y.min.break / 10^y.min.break.sig) * 10^y.min.break.sig
+      y.min.break <- y.min.break * -1
+    } else if(y.min.break > 0) {
+      y.min.break.sig <- floor(log10(y.min.break)) - 1
+      y.min.break <- ceiling(y.min.break / 10^y.min.break.sig) * 10^y.min.break.sig
+    }
+    
+    if(y.max.break < 0){
+      y.max.break <- abs(y.max.break)
+      y.max.break.sig <- floor(log10(y.max.break)) - 1
+      y.max.break <- ceiling(y.max.break / 10^y.max.break.sig) * 10^y.max.break.sig
+      y.max.break <- y.max.break * -1
+    } else {
+      y.max.break.sig <- floor(log10(y.max.break)) - 1
+      y.max.break <- ceiling(y.max.break / 10^y.max.break.sig) * 10^y.max.break.sig
+    }
+    
+    out.plot <- out.plot + scale_y_continuous(breaks=c(y.min.break, y.max.break))
+  }
+
+  out.plot <- out.plot + theme(axis.title.x=element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank(),
           panel.background = element_rect(fill = "white", colour = "white", size = 0.5, linetype = "solid"),
           panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "white"),
           panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "white"),
@@ -860,7 +893,7 @@ browserStyle_plotting <- function(input.list, score.names, label.color.list,
   mart.to.use <- c()
   plot.exons <- c()
   plot.chrom <- strsplit(input.list[[1]]$chrom[1], 'chr')[[1]][2]
-  if(is.null(genome.to.use)){
+  if(is.null(genome.to.use) || genome.to.use == 'hg37'){
     mart.to.use <- useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org",
                path="/biomart/martservice",dataset="hsapiens_gene_ensembl")
 
@@ -1073,7 +1106,7 @@ exon_layer_toGrob <- function(input.layer, all.min, all.max, only.gene){
         }
         temp.name$geneName <- temp.gene.name
       } else {
-        if(names(temp.layer)[l] == only.gene){
+        if(names(temp.layer)[l] %in% only.gene){
           temp.name <- data.frame(chrom = temp.gene$seqnames[1], xposition = (min(temp.gene$start) + max(temp.gene$end)) / 2,
                                   yposition = 0.5 - i*layer.jump + 0.55*layer.jump, stringsAsFactors = F)
           temp.gene.name <- names(temp.layer)[l]
