@@ -12,20 +12,57 @@ Clone source code to your desired location with the following command: `git clon
 # Install requirements
 ou will need the following packages to run RELICS. If you don't have them, install them using the following commands. Installations will take about 5 minutes on a standard laptop.
 
-ggplot2
+ggplot2 (for generating the individual tracks
 
 ```install.packages('ggplot2')```
 
+grid (for combining the different tracks)
+
+```install.packages('grid')```
+
+gridExtra (for combining the different tracks)
+
+```install.packages('gridExtra')```
+
+
 # Bioconductor packages
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+
+    install.packages("BiocManager")
+``` 
+
+GenomicRanges (for handling genomic coordinates)
+```r
+BiocManager::install("biomaRt")
+```
+
+biomaRt (for plotting Genes)
+```r
+BiocManager::install("GenomicRanges", version = "3.8")
+```
 
 # Input data format
+GenomeColoR requires data with chromosome positions as well as scores and labels. 
+The required columns must have the following information: chromosome, score start, score end, label, score
+
+The columns specifying the above are mandatory and must be labelled `chrom`, `start`, `end`, `label` and `genomeScore` respectively.
+
+Below is part of the example file in the `Data` folder. It's the results of analyzing data from a CRISPR inhibition (CRISPRi) screen by [Fulco et al. (2016)](https://science.sciencemag.org/content/354/6313/769.abstract) with [RELICS](https://github.com/patfiaux/RELICS), a tool developped specifically for analyzing tiling CRISPR screens for the detection of functional sequences (FS).
+
+| chrom | start | end | label | genomeScore | 
+|----------|----------|----------|----------|----------|
+| chrX | 48603496 | 48603916 | non_Functional | 1.01e-06 |
+| chrX | 48603917 | 48605144 | non_Functional | 3.52e-06 |
+| chrX | 48658794 | 48658919 | FS 1 |
+| chrX | 48658920 | 48659024 | FS 1 |
 
 # Quickstart with example data
 In this example we will recreate the following figure:
 
-![alt text](Figures/GATA1_GenomeColoR_plot.png)
+![GATA1 analysis with RELICS](Figures/GATA1_GenomeColoR_plot.png)
 
-The figure shows the results of analyzing data from a CRISPR inhibition (CRISPRi) screen by [Fulco et al. (2016)](https://science.sciencemag.org/content/354/6313/769.abstract) with [RELICS](https://github.com/patfiaux/RELICS), a tool developped specifically for analyzing tiling CRISPR screens for the detection of functional sequences (FS). RELICS reports all functional sequences detected and their location. To keep apart the different FS we will give each of them a distinct color.
+RELICS reports all functional sequences detected and their location. To keep apart the different FS we will give each of them a distinct color.
 
 We will add in the log2 fold change of the raw data as a separate track as well as an epigentic track that is commonly used as a heuristic for detecting functional sequences.
 
