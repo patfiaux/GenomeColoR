@@ -3,6 +3,8 @@ A package for coloring genome tracks by segment types
 
 The main feature of GenomeColoR is to highlighting different regions of the same track with different colors as specified by a set of labels, doing so for multiple tracks while also displaying genes and genome coordinates.
 
+![GATA1 analysis with RELICS](Figures/GATA1_GenomeColoR_plot.png)
+
 # Installation
 GenomeColoR requires R version 3.51 or higher
 
@@ -58,9 +60,7 @@ Below is part of the example file in the `Data` folder. It's the results of anal
 | chrX | 48658920 | 48659024 | FS 1 | 0.795 |
 
 # Quickstart with example data
-In this example we will recreate the following figure:
-
-![GATA1 analysis with RELICS](Figures/GATA1_GenomeColoR_plot.png)
+In this example we will recreate the figure above:
 
 RELICS reports all functional sequences detected and their location. To keep apart the different FS we will give each of them a distinct color.
 
@@ -150,7 +150,7 @@ Differnt tracks might have varying importance in your plot. Incrrease the size o
 track.heights <- c(4, 4, 0.5)
 ```
 
-## 5 Plotting
+# 5 Plotting
 If nothing is specified, GenomeColoR will use hg37 as reference genome. 
 
 ```r
