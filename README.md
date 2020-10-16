@@ -41,7 +41,7 @@ BiocManager::install("biomaRt")
 
 biomaRt (for plotting Genes)
 ```r
-BiocManager::install("GenomicRanges", version = "3.8")
+BiocManager::install("GenomicRanges")
 ```
 
 # Input data format
