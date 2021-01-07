@@ -859,7 +859,7 @@ browserStyle_plotting <- function(input.list, score.names, label.color.list,
         list.to.plot[[i]] <- plot_browser_bed(input.list[[i]], all.start.min, all.start.max,
                                               names(input.list)[i])
       } else if(score.names[i] == 'pointCloud'){
-        if(! 'genomeScore' %in% names(input.list[[1]])){
+        if(! 'genomeScore' %in% names(input.list[[i]])){
           print("cloud plotting requires 'genomeScore as score column")
           break()
         } else {
